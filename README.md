@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>🌟 Proyecto de Discriminación – 2º 4ª</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  body { font-family: 'Roboto', sans-serif; background: #f5f7fa; margin:0; padding:20px; display:flex; flex-direction:column; align-items:center;}
+  h1 { color:#2c3e50; text-align:center; margin-bottom:5px;}
+  h3 { color:#555; font-weight:400; margin-top:0; text-align:center;}
+  p { text-align:center; max-width:750px; margin-bottom:20px;}
+  select, button, input[type="file"] { padding:12px; margin:10px 5px; border-radius:6px; border:1px solid #ccc; font-size:16px; width:280px;}
+  button { background-color:#3498db; color:white; border:none; cursor:pointer; transition:.3s;}
+  button:hover { background-color:#2980b9;}
+  #resultado { margin-top:25px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; width:100%; max-width:1200px;}
+  .card { background-color:#fff; border-radius:12px; box-shadow:0 8px 16px rgba(0,0,0,0.1); padding:20px; width:340px; transition:transform .2s;}
+  .card:hover { transform: translateY(-5px);}
+  .card h2 { margin-top:0; text-align:center;}
+  .card ul { padding-left:20px;}
+  .card img { max-width:120px; border-radius:50%; display:block; margin:15px auto 0;}
+  .card a { display:inline-block; margin-top:10px; color:#3498db; text-decoration:none; font-weight:bold; text-align:center; width:100%;}
+  .card a:hover { text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<h1>🏫 Proyecto de Discriminación – 2º 4ª</h1>
+<h3>Por: Alma Monzón, Francesca Benítez y Camilo Gropper</h3>
+<p>Seleccioná un tipo de discriminación o contá tu inquietud para recibir orientación y apoyo escolar.</p>
+
+<select id="tipoDiscriminacion">
+  <option value="">-- Elegí una opción --</option>
+  <option value="racismo">Racismo ✊🏿</option>
+  <option value="orientacionSexual">Orientación sexual 🏳‍🌈</option>
+  <option value="genero">Género ⚧</option>
+  <option value="edad">Edad 🕒</option>
+  <option value="discapacidad">Discapacidad ♿</option>
+  <option value="religion">Religión ✡☪✝</option>
+  <option value="idioma">Idioma 🗣</option>
+  <option value="claseSocial">Clase social 💰</option>
+  <option value="aspectoFisico">Aspecto físico 👀</option>
+  <option value="enfermedad">Enfermedad o condición médica 🏥</option>
+</select>
+
+<input type="file" id="fotoUsuario" accept="image/*">
+<button onclick="mostrarSolucion()">Ver resolución escolar</button>
+
+<div id="resultado"></div>
+
+<script>
+const soluciones = {
+  racismo:{titulo:"✊🏿 Racismo",def:"Trato injusto por color de piel u origen.",apoyo:"Tus emociones son válidas. Buscá contención en alguien de confianza.",res:["Comentá lo ocurrido a un/a docente o preceptor/a.","Pedí ayuda al orientador/a escolar.","Guardá evidencia (mensajes, fotos, testigos).","La dirección del colegio debe intervenir y protegerte."],color:"#fde2e2",link:"https://www.un.org/es/racism"},
+  orientacionSexual:{titulo:"🏳‍🌈 Orientación Sexual",def:"Rechazo por tu orientación o identidad de género.",apoyo:"Ser vos mismo/a es un derecho. Buscá contención en adultos de confianza.",res:["Hablá con un/a profe de confianza.","Pedí ayuda al gabinete o dirección si hay acoso.","Participá en grupos de apoyo dentro del colegio."],color:"#fde4fc",link:"https://ilga.org/"},
+  genero:{titulo:"⚧ Género",def:"Burlas o desigualdad por ser hombre, mujer o no binario.",apoyo:"Tu identidad merece respeto. No permitas que nadie te haga sentir menos.",res:["Comentá lo ocurrido a un docente o tutor/a.","Solicitá apoyo del gabinete escolar.","Si persiste, la dirección debe actuar."],color:"#e2f0fb",link:"https://www.unwomen.org/es"},
+  edad:{titulo:"🕒 Edad",def:"Discriminación por ser joven o mayor.",apoyo:"Todas las edades merecen respeto. Hablar de lo que sentís ayuda.",res:["Comentá lo sucedido a un docente o preceptor/a.","Pedí mediación con orientador/a.","Si persiste, informá a dirección con evidencia."],color:"#fff7d6",link:"https://www.ilo.org/global/topics/equality-and-discrimination/lang--es/index.htm"},
+  discapacidad:{titulo:"♿ Discapacidad",def:"Trato desigual por capacidades físicas o mentales.",apoyo:"Todos tenemos capacidades distintas. Pedir ayuda no es debilidad.",res:["Comentá lo que pasó con tus docentes.","Pedí adaptaciones si las necesitás.","La escuela debe asegurar tu inclusión."],color:"#e0f7e0",link:"https://www.un.org/development/desa/disabilities/"},
+  religion:{titulo:"✡☪✝ Religión",def:"Burlas o exclusión por tu religión.",apoyo:"Tu fe es importante. Buscá apoyo en adultos o compañeros respetuosos.",res:["Comentá la situación a un docente o preceptor/a.","Pedí mediación al orientador/a.","Informá a la dirección si persiste la discriminación."],color:"#fef2e0",link:"https://www.un.org/es/religious-freedom"},
+  idioma:{titulo:"🗣 Idioma",def:"Burlas o exclusión por tu idioma o acento.",apoyo:"Hablar distinto es enriquecedor. Pedí contención si te sentís mal.",res:["Comentá lo sucedido a un docente.","Pedí que se respete tu diversidad lingüística.","Si persiste, informá a la dirección del colegio."],color:"#e8f4fc",link:"https://www.unesco.org"},
+  claseSocial:{titulo:"💰 Clase social",def:"Exclusión o burlas por tu nivel socioeconómico.",apoyo:"Tu valor no depende de tu dinero. Buscá contención y apoyo.",res:["Comentá lo que pasó a un docente o preceptor/a.","Pedí mediación al orientador/a escolar.","Si sigue, informá a la dirección con evidencia."],color:"#fff0e0",link:"https://www.un.org/es/sections/issues-depth/poverty/"},
+  aspectoFisico:{titulo:"👀 Aspecto físico",def:"Burlas o discriminación por tu apariencia.",apoyo:"Tu apariencia no define tu valor. Hablá con alguien de confianza.",res:["Comentá lo sucedido a un docente o preceptor/a.","Buscá apoyo del orientador/a escolar.","Informá a la dirección si persiste."],color:"#f0e8fc",link:"https://www.who.int"},
+  enfermedad:{titulo:"🏥 Enfermedad o condición médica",def:"Exclusión por tu estado de salud.",apoyo:"Tu salud no te hace menos. Pedí contención y ayuda médica si es necesario.",res:["Comentá lo que sucede a un docente o preceptor/a.","Pedí apoyo del orientador/a.","Informá a la dirección si persiste."],color:"#e8fce8",link:"https://www.who.int"}
+};
+
+function mostrarSolucion(){
+  const tipo = document.getElementById("tipoDiscriminacion").value;
+  const resultado = document.getElementById("resultado");
+  const fotoInput = document.getElementById("fotoUsuario");
+  resultado.innerHTML="";
+  
+  if(!tipo){ 
+    resultado.innerHTML="<p>❗ Por favor, seleccioná una opción para recibir ayuda.</p>"; 
+    return;
+  }
+  
+  const info = soluciones[tipo];
+  const card=document.createElement("div");
+  card.className="card";
+  card.style.backgroundColor=info.color;
+  card.innerHTML=`<h2>${info.titulo}</h2>
+  <p><strong>Definición:</strong> ${info.def}</p>
+  <p><strong>Apoyo emocional:</strong> ${info.apoyo}</p>
+  <p><strong>Resolución:</strong></p>
+  <ul>${info.res.map(r => `<li>${r}</li>`).join("")}</ul>
+  <a href="${info.link}" target="_blank">Recursos externos</a>`;
+  
+  if(fotoInput.files && fotoInput.files[0]){
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const img=document.createElement("img");
+      img.src=e.target.result;
+      card.appendChild(img);
+    }
+    reader.readAsDataURL(fotoInput.files[0]);
+  }
+  resultado.appendChild(card);
+}
+</script>
+</body>
+</html>
